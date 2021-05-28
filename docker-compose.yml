@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: Trolling
+      MYSQL_USER: trolling
+      MYSQL_PASSWORD: trolling
+    volumes:
+      - ./mysqlVolume2:/var/lib/mysql:rw
+      - ./database/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql:ro
+  node-red:
+    image: nodered/node-red
+    ports:
+      - "1880:1880"
+    links:
+      - mysql
+    volumes:
+      - ./node_red:/data/
+volumes:
+  node-red:
+  mysqlVolume2:
